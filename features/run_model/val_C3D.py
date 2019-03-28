@@ -21,7 +21,7 @@ parser.add_argument('--restore_file', default='best', help="name of the file in 
 USE_CUDA = 1
 
 
-def evaluate(model, val_loader, metrics_save, loss_func, time_tile):
+def evaluate(model, val_loader, metrics_save, loss_func):
     """Evaluate the model on `num_steps` batches.
     Args:
         model: (torch.nn.Module) the neural network
@@ -35,58 +35,25 @@ def evaluate(model, val_loader, metrics_save, loss_func, time_tile):
     # summary for current eval loop
     summ = []
 
-    # compute metrics over the dataset
-    for i, val_batch in enumerate(val_loader):
-        if time_tile >1:
-            # Create a sequence of tensors to stack
-            string_command = "val_batch['vid'][0,0,:,:,:]" + "," + "val_batch['vid'][0,1,:,:,:]"
-            label_string = "val_batch['label'][0]" + "," + "val_batch['label'][0]"
 
-            for j in range(1,val_batch['vid'].size(0)):
-                for k in range(val_batch['vid'].size(1)):
-                    string_command = string_command.strip() + "," + "val_batch['vid'][%s,%s,:,:,:]"\
-                    %(str(j),str(k))   
-                    label_string = label_string.strip() + "," + "val_batch['label'][%s]"%str(j)  
+    inputs, labels = val_batch
 
-            # Stack tensors (have to reformat tensors because of the tiles)
-            stacked = torch.stack((eval(string_command)), 0)
+    loss = loss_func(output_batch, labels)
 
-            # Format tensors
-            inputs = stacked.unsqueeze(1)
-            labels = torch.LongTensor(eval(label_string))
-            del string_command
-            del label_string
-        else: 
-            inputs = val_batch['vid']
-            labels = val_batch['label']
-        del val_batch
-        
-            
-         # Wrap them in a Variable object
-        inputs, labels = utils.tovar(inputs), utils.tovar(labels)
-        # compute model output
-        #output_batch = model(inputs)
-        output_batch=model(inputs)
-        output_batch = output_batch.squeeze(1)
-        labels = labels.type(torch.FloatTensor).cuda()
-        output_batch = output_batch.type(torch.FloatTensor).cuda()
+    # extract data from torch Variable, move to cpu, convert to numpy arrays
+    output_batch = output_batch.data.cpu().numpy()
+    labels_batch = labels.data.cpu().numpy()
 
-        loss = loss_func(output_batch, labels)
-
-        # extract data from torch Variable, move to cpu, convert to numpy arrays
-        output_batch = output_batch.data.cpu().numpy()
-        labels_batch = labels.data.cpu().numpy()
-
-        # compute all metrics on this batch
-        summary_batch = {"accuracy":metrics_save["accuracy"](output_batch, labels_batch),
-                         "AUC":metrics_save["AUC"](output_batch, labels_batch),
-                         "mean_fpr":metrics_save["fpr"](output_batch, labels_batch),
-                         "mean_tpr":metrics_save["tpr"](output_batch, labels_batch),
-                         "loss":loss.data[0]}
-        summ.append(summary_batch)
+    # compute all metrics on this batch
+    summary_batch = {"accuracy":metrics_save["accuracy"](output_batch, labels_batch),
+                     "AUC":metrics_save["AUC"](output_batch, labels_batch),
+                     "mean_fpr":metrics_save["fpr"](output_batch, labels_batch),
+                     "mean_tpr":metrics_save["tpr"](output_batch, labels_batch),
+                     "loss":loss.data[0]}
+    summ.append(summary_batch)
 
     # compute mean of all metrics in summary
-    metrics_mean = {metric:np.mean([x[metric] for x in summ]) for metric in summ[0]} 
+    metrics_mean = {metric:np.mean([x[metric] for x in summ]) for metric in summ[0]}
     metrics_string = " ; ".join("{}: {:05.3f}".format(k, v) for k, v in metrics_mean.items())
     logging.info("- Eval metrics : " + metrics_string)
     return metrics_mean
@@ -137,15 +104,15 @@ if __name__ == '__main__':
     # Define the model and optimizer
     model = net.SimpleCNN()
     model.cuda()
-    
+
     metrics_save = net.metrics_save
 
     logging.info("Starting evaluation")
 
     # Reload weights from the saved file
     utils.load_checkpoint(os.path.join(args.model_dir, args.restore_file + '.pth.tar'), model)
-    
-    
+
+
     # Evaluate
     test_metrics = evaluate(model, test_loader, metrics_save)
     save_path = os.path.join(model_dir, "metrics_test_{}.json".format(restore_file))
