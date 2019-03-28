@@ -1,0 +1,19 @@
+
+{
+    "model_dir": "/beegfs/ay1392/Embryo_models/models/C3D_dartmouth",
+    "implementation_dir": "/beegfs/ay1392/Embryo_models/implementations/C3D_dartmouth",
+    "learning_rate": 1e-3,
+    "decay": 1e-3,
+    "batch_size": 5,
+    "num_epochs": 200,
+    "dropout_rate":0.8, 
+    "save_summary_steps": 100,
+    "num_workers": 4,
+    "data_dir": "/scratch/ay1392/00_rawdata/movies/set_01/NYULFC_Grifo_SINAE_Embryoscope_Files/",
+    "train_image_list": "/beegfs/ay1392/Embryo_models/models/labels/labels_109to110_train_lab.txt",
+    "val_image_list": "/beegfs/ay1392/Embryo_models/models/labels/labels_109to110_val_lab.txt",
+    "test_image_list": "/beegfs/ay1392/Embryo_models/models/labels/labels_109to110_test_lab.txt",
+    "time_tile": 1,
+    "optimizer" : "optim.Adam(model.parameters(), lr=learning_rate, weight_decay=decay)",
+    "loss_func": "torch.nn.BCEWithLogitsLoss() "
+}
