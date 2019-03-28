@@ -1,3 +1,10 @@
+
+#################################################################################
+#   Utils from CS230 Deep Learning at Stanford
+#     TAs: Surag Nair, Guilluame Genthial, Olivier Moindrot
+#     https://github.com/cs230-stanford/cs230-code-examples/blob/master/pytorch/vision/utils.py
+################################################################################
+
 import json
 import logging
 import os
