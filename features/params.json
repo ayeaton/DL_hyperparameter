@@ -16,5 +16,5 @@
     "test_image_list": "/beegfs/ay1392/Embryo_models/models/labels/labels_109to110_test_lab.txt",
     "time_tile": 1,
     "optimizer" : "optim.Adam(model.parameters(), lr=learning_rate, weight_decay=decay)",
-    "loss_func": "torch.nn.BCEWithLogitsLoss() "
+    "loss_func": "torch.nn.CrossEntropyLoss() "
 }
