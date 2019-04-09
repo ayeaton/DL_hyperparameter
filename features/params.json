@@ -1,7 +1,7 @@
 
 {
-    "model_dir": "/beegfs/ay1392/Embryo_models/models/C3D_dartmouth",
-    "implementation_dir": "/beegfs/ay1392/Embryo_models/implementations/C3D_dartmouth",
+    "model_dir": "/home/ay1392/anna_beegfs/pytorch_projects/features_proj/features",
+    "implementation_dir": "/home/ay1392/anna_beegfs/pytorch_projects/implementations/features",
     "learning_rate": 1e-3,
     "decay": 1e-3,
     "batch_size": 5,
@@ -9,12 +9,11 @@
     "dropout_rate":0.8,
     "save_summary_steps": 100,
     "num_workers": 4,
-    "model": "test_model",
-    "data_dir": "/scratch/ay1392/00_rawdata/movies/set_01/NYULFC_Grifo_SINAE_Embryoscope_Files/",
-    "train_image_list": "/beegfs/ay1392/Embryo_models/models/labels/labels_109to110_train_lab.txt",
-    "val_image_list": "/beegfs/ay1392/Embryo_models/models/labels/labels_109to110_val_lab.txt",
-    "test_image_list": "/beegfs/ay1392/Embryo_models/models/labels/labels_109to110_test_lab.txt",
-    "time_tile": 1,
-    "optimizer" : "optim.Adam(model.parameters(), lr=learning_rate, weight_decay=decay)",
-    "loss_func": "torch.nn.CrossEntropyLoss() "
+    "model": "Inception",
+    "metadata_file": "/home/ay1392/anna_beegfs/pytorch_projects/features_proj/features/project_specific/metadata_split.txt",
+    "optimizer" : "optim.SGD(model.parameters(), lr=learning_rate, weight_decay=decay)",
+    "loss_func": "torch.nn.CrossEntropyLoss() ",
+    "classes": ["acinar", "normal"],
+    "comet_api": "ysBHHTJLIBAhlklc4sdBd0vlp",
+    "comet_name": "general"
 }

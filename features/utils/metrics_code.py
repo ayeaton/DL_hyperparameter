@@ -52,12 +52,12 @@ def tpr(outputs, labels):
 
 
 #maintain all metrics required in this dictionary- these are used in the training and evaluation loops
-# metrics_save= {
-#     'accuracy': accuracy,
-#     'AUC': AUC,
-#     'fpr': fpr,
-#     'tpr':tpr
-# }
+metrics_save= {
+     'accuracy': accuracy,
+     'AUC': AUC,
+     'fpr': fpr,
+     'tpr':tpr
+ }
 
-metrics_save = {'accuracy':accuracy}
+#metrics_save = {'accuracy':accuracy}
 

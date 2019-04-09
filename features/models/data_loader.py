@@ -7,12 +7,6 @@ import pandas as pd
 import torchvision.transforms as transforms
 
 
-standard_transform = transforms.Compose([
-    transforms.Scale(299),
-    transforms.ToTensor(),
-    transforms.Normalize(
-    mean=[0.485, 0.456, 0.406],
-    std=[0.229, 0.224, 0.225])])
 
 class dataset(Dataset):
     """
@@ -23,11 +17,18 @@ class dataset(Dataset):
     tranformer: transform
     classes: list of classes to use, or "all"
     """
-    def __init__(self, file_path, split, transformer, classes):
+    def __init__(self, file_path, split, classes):
+
+
+        self.transformer = transforms.Compose([
+            transforms.Scale(299),
+            transforms.ToTensor(),
+            transforms.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225])])
 
         self.file_path = file_path
         self.split = split
-        self.transformer = transformer
 
         with open(self.file_path, 'r') as filehandle:
             metadata_list = json.load(filehandle)
