@@ -33,11 +33,16 @@ class dataset(Dataset):
         with open(self.file_path, 'r') as filehandle:
             metadata_list = json.load(filehandle)
 
-        metadata_df = pd.DataFrame(metadata_list, columns =['Path', 'label', 'slide', 'label_num', 'split'])
+        metadata_df = pd.DataFrame(metadata_list, columns =['Path', 'label', 'slide', 'split'])
         metadata_split = metadata_df[metadata_df['split'] == self.split]
 
         if classes != "all":
             metadata_split = metadata_split[metadata_split['label'].isin(classes)]
+            metadata_split.label = pd.Categorical(metadata_split.label)
+            metadata_split['label_num'] = metadata_split.label.cat.codes
+        else:
+            metadata_split.label = pd.Categorical(metadata_split.label)
+            metadata_split['label_num'] = metadata_split.label.cat.codes
 
         self.image_paths = metadata_split['Path']
         self.labels = metadata_split['label_num']

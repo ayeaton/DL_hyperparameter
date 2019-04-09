@@ -141,9 +141,7 @@ def main():
 
         # make the list of tuples into a data frame
         dir_df = pd.DataFrame(save_list, columns =['Path', 'label', 'slide'])
-        # add a column with the classes as numerical
-        dir_df.label = pd.Categorical(dir_df.label)
-        dir_df['label_num'] = dir_df.label.cat.codes
+
 
         save_list = split_classes(metadata_df = dir_df, split_column = 'slide',
         class_column = 'label', val_split = val_split, test_split = test_split)

@@ -4,7 +4,7 @@
     "implementation_dir": "/home/ay1392/anna_beegfs/pytorch_projects/implementations/features",
     "learning_rate": 1e-3,
     "decay": 1e-3,
-    "batch_size": 5,
+    "batch_size": 2,
     "num_epochs": 200,
     "dropout_rate":0.8,
     "save_summary_steps": 100,
