@@ -1,0 +1,19 @@
+
+{
+    "model_dir": "/home/ay1392/anna_beegfs/pytorch_projects/features_proj/src/",
+    "implementation_dir": "/home/ay1392/anna_beegfs/pytorch_projects/features_implementation/test/",
+    "learning_rate": 1e-3,
+    "decay": 1e-3,
+    "batch_size": 10,
+    "num_epochs": 200,
+    "dropout_rate":0.8,
+    "save_summary_steps": 100,
+    "num_workers": 4,
+    "model": "Inception",
+    "metadata_file": "/home/ay1392/anna_beegfs/pytorch_projects/features_proj/src/data/metadata_split.txt",
+    "optimizer" : "optim.SGD(model.parameters(), lr=learning_rate, weight_decay=decay)",
+    "loss_func": "torch.nn.CrossEntropyLoss() ",
+    "classes": ["acinar", "normal"],
+    "comet_api": "ysBHHTJLIBAhlklc4sdBd0vlp",
+    "comet_name": "general"
+}
